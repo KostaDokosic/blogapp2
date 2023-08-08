@@ -10,7 +10,5 @@
         @foreach ($posts as $post)
             @include('components.postcard')
         @endforeach
-
-        {{ $posts }}
     </div>
 @endsection
