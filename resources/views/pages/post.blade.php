@@ -8,4 +8,7 @@
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->body }}</p>
     <small>Author{{ $post->user->name }}</small>
+
+    @include('components.createcomment')
+    @include('components.comments')
 @endsection

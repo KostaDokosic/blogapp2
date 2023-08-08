@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CreatePostMail;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('isPublished', true)->get();
+        $posts = Post::paginate(3);
         return view('pages.posts', compact('posts'));
     }
 
@@ -53,7 +54,8 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::where('id', $id)->with('user')->first();
+        $post->comments = Comment::paginate(2);
         return view('pages.post', compact('post'));
     }
 
