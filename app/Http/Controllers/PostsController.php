@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CreatePostMail;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PostsController extends Controller
 {
@@ -34,11 +36,14 @@ class PostsController extends Controller
             'body' => 'required|string|min:10|max:5000'
         ]);
 
-        Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'body' => $request->body,
             'user_id' => $user->id
         ]);
+
+        $mailData = $post->only('title', 'body');
+        Mail::to($user->email)->send(new CreatePostMail($mailData));
 
         return redirect('createpost')->with('status', 'Post successfully created.');
     }
