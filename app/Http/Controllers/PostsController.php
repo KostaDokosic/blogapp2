@@ -55,7 +55,7 @@ class PostsController extends Controller
     public function show(string $id)
     {
         $post = Post::where('id', $id)->with('user')->first();
-        $post->comments = Comment::paginate(2);
+        $post->comments = Comment::where('post_id', $id)->paginate(2);
         return view('pages.post', compact('post'));
     }
 

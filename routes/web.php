@@ -34,3 +34,5 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('isAuth');
 
 
 Route::post('/createcomment', [CommentsController::class, 'store'])->middleware('isAuth');
+Route::delete('/deletecomment', [CommentsController::class, 'destroy'])->middleware('isAuth');
+Route::put('/updatecomment', [CommentsController::class, 'update'])->middleware('isAuth');
