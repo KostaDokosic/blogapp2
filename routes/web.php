@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,9 @@ Route::post('/createpost', [PostsController::class, 'store'])->middleware('isAdm
 
 Route::get('/register', [AuthController::class, 'showRegisterPage'])->middleware('notAuth');
 Route::get('/login', [AuthController::class, 'showLoginPage'])->middleware('notAuth');
-
 Route::post('/register', [AuthController::class, 'register'])->middleware('notAuth');
 Route::post('/login', [AuthController::class, 'login'])->middleware('notAuth');
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('isAuth');
+
+
+Route::post('/createcomment', [CommentsController::class, 'store'])->middleware('isAuth');
