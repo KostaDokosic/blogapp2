@@ -21,13 +21,13 @@ Route::get('/', function () {
 
 Route::get('/posts', [PostsController::class, 'index']);
 Route::get('/posts/{id}', [PostsController::class, 'show']);
-Route::get('/createpost', [PostsController::class, 'createPost']);
-Route::post('/createpost', [PostsController::class, 'store']);
+Route::get('/createpost', [PostsController::class, 'createPost'])->middleware('isAdmin');
+Route::post('/createpost', [PostsController::class, 'store'])->middleware('isAdmin');
 
 
-Route::get('/register', [AuthController::class, 'showRegisterPage']);
-Route::get('/login', [AuthController::class, 'showLoginPage']);
+Route::get('/register', [AuthController::class, 'showRegisterPage'])->middleware('notAuth');
+Route::get('/login', [AuthController::class, 'showLoginPage'])->middleware('notAuth');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('notAuth');
+Route::post('/login', [AuthController::class, 'login'])->middleware('notAuth');
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('isAuth');

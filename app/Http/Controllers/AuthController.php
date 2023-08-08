@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
+
     public function showRegisterPage() {
         return view('pages.auth.register');
     }
@@ -19,10 +20,6 @@ class AuthController extends Controller
 
 
     public function register(Request $request) {
-        if(Auth::check()) {
-            return redirect('/login')->withErrors('You are already logged in!');
-        }
-
         $request->validate([
             'name' => 'required|min:2|max:32|string',
             'email' => 'required|unique:users,email',
@@ -35,14 +32,11 @@ class AuthController extends Controller
         'password' => Hash::make($request->password)
        ]);
 
-       return redirect('/login')->with('status', 'Account created. Please login.');
+       redirect('/');
+       $this->login($request);
     }
 
     public function login(Request $request) {
-        if(Auth::check()) {
-            return redirect('/login')->withErrors('You are already logged in!');
-        }
-
         $request->validate([
             'email' => 'required|exists:users,email',
             'password' => 'required',
