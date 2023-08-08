@@ -46,16 +46,42 @@ class CommentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'comment_id' => 'required|exists:comments,id',
+            'post_id' => 'required|exists:posts,id',
+            'content' => 'required|min:3|max:5000|string'
+        ]);
+
+        $user = Auth::user();
+        $comment =  Comment::find($request->comment_id);
+        if($user->id !== $comment->user->id) {
+            return redirect('/posts/' . $request->post_id)->withErrors('This is not your comment!');
+        }
+
+        $comment->content = $request->content;
+        $comment->save();
+        return redirect('/posts/' . $request->post_id)->with('status', 'Comment updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'comment_id' => 'required|exists:comments,id',
+            'post_id' => 'required|exists:posts,id'
+        ]);
+
+        $user = Auth::user();
+        $comment =  Comment::find($request->comment_id);
+        if($user->id !== $comment->user->id) {
+            return redirect('/posts/' . $request->post_id)->withErrors('This is not your comment!');
+        }
+
+        $comment->delete();
+        return redirect('/posts/' . $request->post_id)->with('status', 'Comment deleted.');
     }
 }
