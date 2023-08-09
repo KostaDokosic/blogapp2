@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\TagsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +37,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('isAuth');
 Route::post('/createcomment', [CommentsController::class, 'store'])->middleware('isAuth');
 Route::delete('/deletecomment', [CommentsController::class, 'destroy'])->middleware('isAuth');
 Route::put('/updatecomment', [CommentsController::class, 'update'])->middleware('isAuth');
+
+
+Route::get('/tags/{name}', [TagsController::class, 'show']);
