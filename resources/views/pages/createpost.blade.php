@@ -18,6 +18,14 @@
             <label class="form-label">Body</label>
             <textarea class="form-control" type="text" name="body" placeholder="Enter body" required></textarea>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Tags</label>
+            <select name="tags[]" class="form-select" multiple>
+                @foreach ($tags as $tag)
+                    <option name="tags[]" value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Save Post</button>
     </form>
 

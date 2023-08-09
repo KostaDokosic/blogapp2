@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\CreatePostMail;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -25,12 +26,8 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::check()) {
-            return redirect('createpost')->withErrors('Only authenticated users can create post');
-        }
-
         $user = Auth::user();
-        // dd($user);
+        // dd($request);
 
         $request->validate([
             'title' => 'required|string|min:5|max:255',
@@ -42,6 +39,8 @@ class PostsController extends Controller
             'body' => $request->body,
             'user_id' => $user->id
         ]);
+
+        $post->tags()->attach($request->tags);
 
         $mailData = $post->only('title', 'body');
         Mail::to($user->email)->send(new CreatePostMail($mailData));
@@ -77,6 +76,7 @@ class PostsController extends Controller
 
     public function createPost()
     {
-        return view('pages.createpost');
+        $tags = Tag::all();
+        return view('pages.createpost', compact('tags'));
     }
 }

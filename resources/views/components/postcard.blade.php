@@ -5,6 +5,7 @@
             <h3 class="mb-0">{{ $post->title }}</h3>
             <div class="mb-1 text-body-secondary">Nov 12</div>
             <p class="card-text mb-auto">{{ $post->user->name }}</p>
+            @include('components.tags')
             <a href="/posts/{{ $post->id }}" class="icon-link gap-1 icon-link-hover stretched-link">
                 Continue reading
                 <svg class="bi">
